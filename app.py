@@ -4,6 +4,8 @@ import dataset
 app = Flask(__name__)
 
 db = dataset.connect('sqlite:///sqlite.db')
+
+
 table = db['news']
 
 
@@ -24,7 +26,7 @@ def db_populate():
         'description': "Web app",
         'date':"01.05.2022",
         'author': "sandro iashvili"
-    })
+})
     table.insert({
         'new_id':'2',
         'name': "Nvidea",
@@ -47,9 +49,9 @@ def api_news():
         return make_response(jsonify(fetch_db(new_id)),201)
     
 @app.route('/api/news/<new_id>', methods = ['GET', 'PUT', 'DELETE'])
-def api_news_details(news_id):
+def api_news_details(new_id):
     if request.method == 'GET':
-        new_obj = fetch_db(news_id)
+        new_obj = fetch_db(new_id)
         if new_obj:
             return make_response(jsonify(new_obj),200)
         else:
@@ -58,11 +60,11 @@ def api_news_details(news_id):
     elif request.method == 'PUT':
         content = request.json
         table.update(content, ['new_id'])
-        new_obj = fetch_db(news_id)
+        new_obj = fetch_db(new_id)
         return make_response(jsonify(new_obj),200)
     
     elif request.method == 'DELETE':
-        table.delete(id = news_id)
+        table.delete(id = new_id)
         return make_response(jsonify({}, 204))
         
 if __name__ == '__main__':
